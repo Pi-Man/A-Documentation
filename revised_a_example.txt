@@ -1,0 +1,75 @@
+/m
+copyright 2021 PiMan
+do not copy, reproduce or distribute without permission
+m/
+
+/m
+default primitive types are defined by an arithmetic type and a size separated by a colon.
+  ex. int:32 for a 32 bit integer type.
+standard supported arithmetic types are
+  float
+  int
+  uint
+standard supported sizes are
+  8 (int/uint only)
+  16 (int/uint only)
+  32
+  64
+
+other sizes and arithmetic types can be user defined
+
+additionally the symbol * can be appended followed by a number or ? to indicate an array of fixed size, or an array of unknown size (semantiaclly equivalent to a pointer)
+m/
+
+/c example defining float of 128 bits, the total size of the struct must match the declaired size
+struct float:128 {
+  float:64 most,
+  float:64 least
+}
+
+/m
+structs are defined using the struct keyword followed by the name of the struct and any generic arguments separated by colons, then braces wrapping the members separated by commas
+
+struct members can be accessed by name (if provided in definition) or by indexing with []
+  ex. 
+  float:128 f;
+  f.most = 0;
+  f[1] = 0; /c the second member of the struct which in this case is float:128.least
+
+ptr:T:N is a standard defined struct that holds a int of the appropriate size (as defined by the architecture)
+it can be used as a type safe alternative to just an int
+m/
+
+/c basic example structure
+struct Foo {
+  int:32 i,
+  float:32 f
+}
+
+/c example generic structure
+struct Vector3:N {
+  float:N x,
+  float:N y,
+  float:N z
+}
+
+/c on when running on an OS arguments can be passed in through command line, otherwise this entry point is unavailable and you must use int:32 main() instead
+int:32 main(int:32 argc, string*?) { /c note string is a standard defined struct wrapping a char aray
+
+  string s = "Hello World!";
+  printlnf("%s you passed:", s); /c note the f at the end of printlnf indicating formatted string
+
+  for (int:32 i = 1; i < argc; i++) { /c note that the first argument is the path/name of the executable
+    println(args[i]); /c note that print (and it's derivatives) will print to standard output which on an OS is likely to be a terminal, however on something like a microcontroller it may be serial output instead
+  }
+
+  return 0; /c no errors, so return 0
+}
+
+
+
+
+
+
+
+
